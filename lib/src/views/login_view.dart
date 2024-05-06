@@ -16,12 +16,12 @@ class _LoginViewState extends State<LoginView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void _showDialogFail() {
+  void _showDialogFail(String message) {
     showDialog(
       context: context,
       builder: (context) {
         return ShowAlertDialog(
-          message: "Pastikan email dan password tidak kosong",
+          message: message,
           onPressed: () => Navigator.pop(context),
         );
       },
@@ -74,6 +74,7 @@ class _LoginViewState extends State<LoginView> {
             ),
             TextFieldComponent(
               controller: emailController,
+              text: "Masukan email",
             ),
             const SizedBox(
               height: 10,
@@ -82,8 +83,8 @@ class _LoginViewState extends State<LoginView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                    margin: const EdgeInsets.only(left: 24),
-                    child: RichText(
+                  margin: const EdgeInsets.only(left: 24),
+                  child: RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
@@ -97,13 +98,14 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ],
                     ),
-                  ),),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
               height: 5,
             ),
-            TextFieldPasswordComponent(controller: passwordController),
+            TextFieldPasswordComponent(controller: passwordController, text: "Masukan password",),
             const SizedBox(
               height: 50,
             ),
@@ -118,8 +120,10 @@ class _LoginViewState extends State<LoginView> {
                       builder: (context) => HomePage(email: email),
                     ),
                   );
+                } else if (_isValidEmail(emailController.text.trim())) {
+                  _showDialogFail("Pastikan email anda valid");
                 } else {
-                  _showDialogFail();
+                  _showDialogFail("Pastikan email dan password tidak kosong");
                 }
               },
               text: "L O G I N",
@@ -128,6 +132,12 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  bool _isValidEmail(String email) {
+    // Gunakan ekspresi reguler atau pustaka validasi email untuk memeriksa format email
+    return RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$')
+        .hasMatch(email);
   }
 
   @override
@@ -170,7 +180,7 @@ class _LoginViewState extends State<LoginView> {
                       Container(
                           margin: const EdgeInsets.only(left: 20),
                           child: Text(
-                            "Enter or create an account in a few easy steps",
+                            "Enter or create an account in a few easy steps 👌",
                             style: Theme.of(context).textTheme.headlineSmall,
                           )),
                     ],

@@ -7,7 +7,6 @@ void main() {
 
 class Navigasi extends StatelessWidget {
   const Navigasi({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

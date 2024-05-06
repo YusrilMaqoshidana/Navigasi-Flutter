@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class TextFieldComponent extends StatelessWidget {
   final TextEditingController controller;
+  final String text;
   const TextFieldComponent({
     Key? key,
     required this.controller,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -12,13 +14,13 @@ class TextFieldComponent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10), 
+        borderRadius: BorderRadius.circular(10),
       ),
-      margin: const EdgeInsets.symmetric(
-          horizontal: 20), 
-      child: TextField(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
         controller: controller,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
+          hintText: text,
           border: OutlineInputBorder(),
         ),
       ),
@@ -28,9 +30,11 @@ class TextFieldComponent extends StatelessWidget {
 
 class TextFieldPasswordComponent extends StatefulWidget {
   final TextEditingController controller;
+  final String text;
   const TextFieldPasswordComponent({
     Key? key,
     required this.controller,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -46,14 +50,14 @@ class _TextFieldPasswordComponentState
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.white, 
+        color: Colors.white,
       ),
-      margin: const EdgeInsets.symmetric(
-          horizontal: 20), 
-      child: TextField(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
         controller: widget.controller,
         obscureText: _isSecure,
         decoration: InputDecoration(
+          hintText: widget.text,
           border: const OutlineInputBorder(),
           suffixIcon: IconButton(
             icon: Icon(_isSecure ? Icons.visibility_off : Icons.visibility),
