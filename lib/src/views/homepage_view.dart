@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:navigasi/src/views/profile_view.dart';
 
 class HomePage extends StatelessWidget {
   final String email;
@@ -9,11 +10,11 @@ class HomePage extends StatelessWidget {
     double lebar = MediaQuery.of(context).size.width * 0.86;
     return Center(
       child: Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         width: lebar,
         height: 200,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
             color: Colors.blueGrey[800]),
@@ -131,7 +132,7 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
                   color: Colors.red, borderRadius: BorderRadius.circular(99)),
               padding: const EdgeInsets.all(8.0),
@@ -147,7 +148,7 @@ class HomePage extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: Colors.black),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
@@ -163,7 +164,7 @@ class HomePage extends StatelessWidget {
         ),
         Text(
           uang,
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
       ],
     );
@@ -177,7 +178,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 50,
         title: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 12,bottom: 8),
+          padding: const EdgeInsets.only(top: 8.0, left: 12, bottom: 8),
           child: Text(
             "Hello, $email",
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -185,14 +186,48 @@ class HomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Container(
-              margin: const EdgeInsets.only(right: 12),
-              child: const Icon(
-                Icons.account_circle,
-                size: 36,
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(
+                      seconds: 1), // Durasi animasi (misalnya 500 milidetik)
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var begin = Offset(1.0, 0.0);
+                    var end = Offset.zero;
+                    var curve = Curves.easeInOut; // Kurva animasi
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+                    var offsetAnimation = animation.drive(tween);
+
+                    // Gunakan animasi SlideTransition
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      ProfileView(
+                    email: email,
+                  ),
+                ),
+              );
+            },
+            icon: Hero(
+              tag: 'profileImage',
+              child: Container(
+                margin: const EdgeInsets.only(right: 12),
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/profile.jpg',
+                    width: 36,
+                    height: 36,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
-            onPressed: () {},
           ),
         ],
       ),
@@ -201,7 +236,7 @@ class HomePage extends StatelessWidget {
           mainCard(context),
           Container(
             width: lebar,
-            margin: EdgeInsets.only(top: 40),
+            margin: const EdgeInsets.only(top: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -235,12 +270,12 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Transaksi terakhir",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
                 GestureDetector(
-                  child: Text(
+                  child: const Text(
                     "Lihat semua",
                   ),
                   onTap: () {},
@@ -249,85 +284,90 @@ class HomePage extends StatelessWidget {
             ),
           ),
           InkWell(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: lebar,
-                height: 50,
-                child: cardDropDown(
-                    const Icon(
-                      Icons.arrow_back,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    "Pembangunan",
-                    "09 April 2024",
-                    "Rp 800.000"),
-              ),),
-              InkWell(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: lebar,
-                height: 50,
-                child: cardDropDown(
-                    const Icon(
-                      Icons.arrow_back,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    "Pembangunan",
-                    "09 April 2024",
-                    "Rp 800.000"),
-              ),),
-              InkWell(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: lebar,
-                height: 50,
-                child: cardDropDown(
-                    const Icon(
-                      Icons.arrow_back,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    "Pembangunan",
-                    "09 April 2024",
-                    "Rp 800.000"),
-              ),),
-              InkWell(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: lebar,
-                height: 50,
-                child: cardDropDown(
-                    const Icon(
-                      Icons.arrow_back,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    "Pembangunan",
-                    "09 April 2024",
-                    "Rp 800.000"),
-              ),),
-              InkWell(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                width: lebar,
-                height: 50,
-                child: cardDropDown(
-                    const Icon(
-                      Icons.arrow_back,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    "Pembangunan",
-                    "09 April 2024",
-                    "Rp 800.000"),
-              ),),
+            onTap: () {},
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              width: lebar,
+              height: 50,
+              child: cardDropDown(
+                  const Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  "Pembangunan",
+                  "09 April 2024",
+                  "Rp 800.000"),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              width: lebar,
+              height: 50,
+              child: cardDropDown(
+                  const Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  "Pembangunan",
+                  "09 April 2024",
+                  "Rp 800.000"),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              margin: EdgeInsets.only(top: 20),
+              width: lebar,
+              height: 50,
+              child: cardDropDown(
+                  const Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  "Pembangunan",
+                  "09 April 2024",
+                  "Rp 800.000"),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              margin: EdgeInsets.only(top: 20),
+              width: lebar,
+              height: 50,
+              child: cardDropDown(
+                  const Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  "Pembangunan",
+                  "09 April 2024",
+                  "Rp 800.000"),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              margin: EdgeInsets.only(top: 20),
+              width: lebar,
+              height: 50,
+              child: cardDropDown(
+                  const Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  "Pembangunan",
+                  "09 April 2024",
+                  "Rp 800.000"),
+            ),
+          ),
         ]),
       ),
     );

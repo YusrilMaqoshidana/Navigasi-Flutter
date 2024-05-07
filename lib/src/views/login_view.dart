@@ -34,11 +34,11 @@ class _LoginViewState extends State<LoginView> {
     return Container(
       height: tinggiCard,
       width: lebarCard,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.blueGrey,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20.0),
-            topRight: const Radius.circular(20.0),
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
           )),
       child: Center(
         child: Column(
@@ -52,16 +52,17 @@ class _LoginViewState extends State<LoginView> {
                 Container(
                   margin: const EdgeInsets.only(left: 24),
                   child: RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       children: [
                         TextSpan(
                           text: 'Email',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: TextStyle(fontSize: 16),
                         ),
-                        const TextSpan(
-                          text: '*',
+                        TextSpan(
+                          text: ' *',
                           style: TextStyle(
-                              color: Colors.red), // Warna untuk karakter "*"
+                              color: Colors.red,
+                              fontSize: 16), // Warna untuk karakter "*"
                         ),
                       ],
                     ),
@@ -85,16 +86,17 @@ class _LoginViewState extends State<LoginView> {
                 Container(
                   margin: const EdgeInsets.only(left: 24),
                   child: RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       children: [
                         TextSpan(
                           text: 'Password',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: TextStyle(fontSize: 16),
                         ),
-                        const TextSpan(
-                          text: '*',
+                        TextSpan(
+                          text: ' *',
                           style: TextStyle(
-                              color: Colors.red), // Warna untuk karakter "*"
+                              color: Colors.red,
+                              fontSize: 16), // Warna untuk karakter "*"
                         ),
                       ],
                     ),
@@ -105,7 +107,10 @@ class _LoginViewState extends State<LoginView> {
             const SizedBox(
               height: 5,
             ),
-            TextFieldPasswordComponent(controller: passwordController, text: "Masukan password",),
+            TextFieldPasswordComponent(
+              controller: passwordController,
+              text: "Masukan password",
+            ),
             const SizedBox(
               height: 50,
             ),
@@ -113,15 +118,32 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () {
                 if (emailController.text.trim() != '' &&
                     passwordController.text.trim() != '') {
-                  String email = emailController.text.trim();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(email: email),
-                    ),
-                  );
-                } else if (_isValidEmail(emailController.text.trim())) {
-                  _showDialogFail("Pastikan email anda valid");
+                  if (_isValidEmail(emailController.text.trim())) {
+                    String email = emailController.text.trim();
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(seconds: 1),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1.0, 0.0);
+                          var end = Offset.zero;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          var offsetAnimation = animation.drive(tween);
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: child,
+                          );
+                        },
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            HomePage(email: email),
+                      ),
+                    );
+                  } else {
+                    _showDialogFail("Pastikan email anda valid");
+                  }
                 } else {
                   _showDialogFail("Pastikan email dan password tidak kosong");
                 }
@@ -136,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
 
   bool _isValidEmail(String email) {
     // Gunakan ekspresi reguler atau pustaka validasi email untuk memeriksa format email
-    return RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$')
+    return RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+.(\.[a-zA-Z0-9-]+)*$')
         .hasMatch(email);
   }
 

@@ -23,7 +23,7 @@ class Navigasi extends StatelessWidget {
               TextStyle(fontWeight: FontWeight.normal, fontSize: 12, color:Colors.blueGrey[800]),
         ),
       ),
-      home: LoginView(),
+      home: const LoginView(),
     );
   }
 }
